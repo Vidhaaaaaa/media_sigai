@@ -1,0 +1,98 @@
+/* src/App.css */
+
+/* Google Fonts */
+@import url(https://fonts.googleapis.com/css?family=Anonymous+Pro);
+
+/* --- Global Reset & Body --- */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background-color: #000000; overflow-x: hidden; }
+.main-wrapper { transition: background-color 0.1s ease-out; position: relative; }
+.starfield-section { height: 100vh; width: 100vw; position: relative; overflow: hidden; }
+.sky-container { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; }
+.stars { width: 1.75px; height: 1.75px; position: absolute; background: transparent; box-shadow: 2vw 5vh 3px white, 10vw 8vh 3px white, 15vw 15vh 2px white, 22vw 22vh 2px white, 28vw 12vh 3px white, 32vw 32vh 2px white, 38vw 18vh 3px white, 42vw 35vh 2px white, 48vw 25vh 3px white, 53vw 42vh 2px white, 58vw 15vh 3px white, 63vw 38vh 2px white, 68vw 28vh 3px white, 73vw 45vh 2px white, 78vw 32vh 3px white, 83vw 48vh 2px white, 88vw 20vh 3px white, 93vw 52vh 2px white, 98vw 35vh 3px white, 5vw 60vh 2px white, 12vw 65vh 3px white, 18vw 72vh 2px white, 25vw 78vh 3px white, 30vw 85vh 2px white, 35vw 68vh 3px white, 40vw 82vh 2px white, 45vw 92vh 3px white, 50vw 75vh 2px white, 55vw 88vh 3px white, 60vw 95vh 2px white, 65vw 72vh 3px white, 70vw 85vh 2px white, 75vw 78vh 3px white, 80vw 92vh 2px white, 85vw 82vh 3px white, 90vw 88vh 2px white, 95vw 75vh 3px white; animation: twinkle 8s infinite linear; }
+.stars::after { content: ""; position: absolute; width: 1.5px; height: 1.5px; background: transparent; box-shadow: 8vw 12vh 3px white, 16vw 18vh 2px white, 24vw 25vh 3px white, 33vw 15vh 2px white, 41vw 28vh 3px white, 49vw 35vh 2px white, 57vw 22vh 3px white, 65vw 42vh 2px white, 73vw 28vh 3px white, 81vw 48vh 2px white, 89vw 32vh 3px white, 97vw 45vh 2px white, 3vw 68vh 3px white, 11vw 75vh 2px white, 19vw 82vh 3px white, 27vw 88vh 2px white, 35vw 72vh 3px white, 43vw 85vh 2px white, 51vw 92vh 3px white, 59vw 78vh 2px white; animation: twinkle 6s infinite linear reverse; }
+.shooting-star { position: absolute; width: 100px; height: 3px; background: linear-gradient(90deg, white, transparent); animation: shoot 3s infinite ease-in; }
+.shooting-star:nth-child(1) { top: 20%; left: -150px; animation-delay: 0s; }
+.shooting-star:nth-child(2) { top: 35%; left: -150px; animation-delay: 1.2s; }
+.shooting-star:nth-child(3) { top: 50%; left: -150px; animation-delay: 2.5s; }
+@keyframes twinkle { 0%, 100% { opacity: 0.9; } 50% { opacity: 0.4; } }
+@keyframes shoot { 0% { transform: translateX(0) translateY(0) rotate(25deg); opacity: 1; } 100% { transform: translateX(120vw) translateY(50vh) rotate(25deg); opacity: 0; } }
+.slide-spacer { height: 100vh; width: 100vw; }
+
+/* --- Title Container --- */
+.title-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 90vw;
+  max-width: 800px;
+}
+
+/* The main line for the typewriter effect (reverted) */
+.line-1 {
+  position: relative; 
+  color: #6b888a;
+  text-shadow: 0 0 4px #2b7336, 0 0 10px #255e42;
+  font-family: 'Courier New', Courier, monospace;
+  text-transform: uppercase;
+  font-size: clamp(2.5rem, 10vw, 7rem);
+  border-right: 3px solid rgba(255, 255, 255, 0.75);
+  white-space: nowrap;
+  overflow: hidden;
+  /* padding-right is REMOVED as requested */
+}
+
+/* --- Caption Styles --- */
+.caption {
+  color: #6b888a;
+  text-shadow: 0 0 4px #2b7336, 0 0 10px #255e42;
+  font-family: 'Anonymous Pro', monospace;
+  font-size: clamp(1rem, 3vw, 1.5rem);
+  margin-top: 1.5rem;
+  text-align: center;
+  border-right: 2px solid rgba(255, 255, 255, 0.75);
+  white-space: nowrap;
+  overflow: hidden;
+  width: 0;
+}
+
+/* --- TITLE ANIMATION --- */
+.anim-typewriter {
+  animation:
+    typewriter 1.5s steps(9) 0.5s 1 normal both,
+    blinkTextCursor 500ms steps(9) infinite normal;
+}
+@keyframes typewriter {
+  from { width: 0; }
+  to { width: 9ch; }
+}
+.line-1.cursor-hidden {
+  animation: typewriter 1.5s steps(9) 0.5s 1 normal both;
+  border-right-color: transparent;
+}
+
+/* --- CAPTION ANIMATION --- */
+.anim-typewriter-caption {
+  animation:
+    typewriter-caption 4s steps(75) normal both,
+    blinkTextCursor 500ms steps(75) infinite normal;
+}
+@keyframes typewriter-caption {
+  from { width: 0; }
+  to { width: 75ch; }
+}
+.caption.cursor-hidden {
+  animation: typewriter-caption 4s steps(75) normal both;
+  border-right-color: transparent;
+}
+
+/* Keyframe for blinking cursor */
+@keyframes blinkTextCursor {
+  from { border-right-color: rgba(255, 255, 255, 0.75); }
+  to { border-right-color: transparent; }
+}
