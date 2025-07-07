@@ -1,6 +1,6 @@
 import Media from '../components/Media.jsx';
 
-const EventsPage = () => {
+const MediaPage = () => {
   return (
     <div className="media-page">
       <Media />
