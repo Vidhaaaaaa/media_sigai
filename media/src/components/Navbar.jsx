@@ -1,5 +1,5 @@
 import { Link, useLocation } from 'react-router-dom';
-import { Calendar, Home } from 'lucide-react';
+import { Calendar, Home, Image } from 'lucide-react'; // 🆕 added Image icon for Media
 
 const Navbar = () => {
   const location = useLocation();
@@ -18,6 +18,7 @@ const Navbar = () => {
             <Home size={18} />
             <span>Home</span>
           </Link>
+
           <Link 
             to="/events" 
             className={`nav-link ${location.pathname === '/events' ? 'active' : ''}`}
@@ -25,10 +26,18 @@ const Navbar = () => {
             <Calendar size={18} />
             <span>Events</span>
           </Link>
+
+          <Link 
+            to="/media" 
+            className={`nav-link ${location.pathname === '/media' ? 'active' : ''}`}
+          >
+            <Image size={18} />
+            <span>Media</span>
+          </Link>
         </div>
       </div>
     </nav>
   );
 };
 
-export default Navbar; 
+export default Navbar;
