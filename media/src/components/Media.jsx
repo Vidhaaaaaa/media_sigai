@@ -2,8 +2,10 @@ import React, { useState, useEffect } from 'react';
 import NightSky from './NightSky';
 import Tile from './tile'; // make sure this is correct
 import './Media.css';
+import TileModal from './TileModal';
 
 const colors = ['#000000', '#0B100E', '#1E332D'];
+
 
 const interpolateColor = (color1, color2, factor) => {
   const hex = (c) => c.toString(16).padStart(2, '0');
@@ -24,6 +26,9 @@ function Media() {
   const [isTitleDone, setIsTitleDone] = useState(false);
   const [startCaption, setStartCaption] = useState(false);
   const [isCaptionDone, setIsCaptionDone] = useState(false);
+  const [selectedTile, setSelectedTile] = useState(null);
+  
+
 
   useEffect(() => {
     const titleTypingDuration = 1500;
@@ -47,29 +52,49 @@ function Media() {
   }, []);
 
   useEffect(() => {
-    const handleScroll = () => {
-      const scrollableHeight = document.documentElement.scrollHeight - window.innerHeight;
-      if (scrollableHeight === 0) return;
-      const scrollFraction = window.scrollY / scrollableHeight;
-      const colorSegments = colors.length - 1;
-      const currentSegment = Math.min(Math.floor(scrollFraction * colorSegments), colors.length - 1);
-      const segmentFraction = (scrollFraction * colorSegments) - currentSegment;
-      const newColor = interpolateColor(colors[currentSegment], colors[currentSegment + 1], segmentFraction);
-      setBackground(newColor);
-    };
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
+    const marker = document.querySelector('.tile-trigger-marker');
+    if (!marker) return;
+  
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setBackground('#000000'); // green when marker hits viewport
+          } else {
+            setBackground('#1E332D'); // black when it's out
+          }
+        });
+      },
+      {
+        threshold: 0.5,
+      }
+    );
+  
+    observer.observe(marker);
+  
     return () => {
-      window.removeEventListener('scroll', handleScroll);
+      observer.disconnect();
     };
   }, []);
+  
+  
 
   // 🧩 Sample tiles for testing layout (you can replace this later)
   const tiles = [
-    { image: 'https://via.placeholder.com/150', description: 'Sunset vibes', name: 'Vidha', dateTag: 'June 2024', eveTag: 'Hackathon' },
-    { image: 'https://via.placeholder.com/150', description: 'Learning React', name: 'Dev', dateTag: 'May 2024', eveTag: 'Workshop' },
-    { image: 'https://via.placeholder.com/150', description: 'Night Sky', name: 'Skywatcher', dateTag: 'April 2024', eveTag: 'Seminar' },
-    { image: 'https://via.placeholder.com/150', description: 'More Vibes', name: 'Chill', dateTag: 'March 2024', eveTag: 'Event' }
+    { image: '/87205.jpg', description: 'Sunset vibes', name: 'Vidha', dateTag: 'June 2024', eveTag: 'Hackathon' },
+    { image: '/87205.jpg', description: 'Learning React', name: 'Dev', dateTag: 'May 2024', eveTag: 'Workshop' },
+    { image: '/87205.jpg', description: 'Night Sky', name: 'Skywatcher', dateTag: 'April 2024', eveTag: 'Seminar' },
+    { image: '/87205.jpg', description: 'More Vibes', name: 'Chill', dateTag: 'March 2024', eveTag: 'Event' },
+    { image: '/87205.jpg', description: 'Night Sky', name: 'Skywatcher', dateTag: 'April 2024', eveTag: 'Seminar' },
+    { image: '/87205.jpg', description: 'More Vibes', name: 'Chill', dateTag: 'March 2024', eveTag: 'Event' },
+    { image: '/87205.jpg', description: 'Night Sky', name: 'Skywatcher', dateTag: 'April 2024', eveTag: 'Seminar' },
+    { image: '/87205.jpg', description: 'More Vibes', name: 'Chill', dateTag: 'March 2024', eveTag: 'Event' },
+    { image: '/eif.jpg', description: 'Night Sky', name: 'Skywatcher', dateTag: 'April 2024', eveTag: 'Seminar' },
+    { image: '/87205.jpg', description: 'More Vibes', name: 'Chill', dateTag: 'March 2024', eveTag: 'Event' },
+    { image: '/87205.jpg', description: 'Night Sky', name: 'Skywatcher', dateTag: 'April 2024', eveTag: 'Seminar' },
+    { image: '/87205.jpg', description: 'More Vibes', name: 'Chill', dateTag: 'March 2024', eveTag: 'Event' },
+    { image: '/hello.gif', description: 'Night Sky', name: 'Skywatcher', dateTag: 'April 2024', eveTag: 'Seminar' },
+    { image: '/eif.jpg', description: 'More Vibes', name: 'Chill', dateTag: 'March 2024', eveTag: 'Event' }
   ];
 
   // 💡 Distribute tiles into 3 columns round-robin
@@ -83,6 +108,7 @@ function Media() {
         name={tile.name}
         dateTag={tile.dateTag}
         eveTag={tile.eveTag}
+        onClick={() => setSelectedTile(tile)}
       />
     );
   });
@@ -120,6 +146,7 @@ function Media() {
           <button className="upload-btn">Upload Media</button>
         </div>
         <div className="tiles-layout">
+        <div className="tile-trigger-marker" /> 
           {columns.map((col, i) => (
             <div key={i} className="tile-column">
               {col}
@@ -127,9 +154,18 @@ function Media() {
           ))}
         </div>
       </div>
-      
-
       <div className="slide-spacer"></div>
+      <footer className="simple-footer">
+        <p>Developed by <strong>MUJ SIGAI WebDev Team</strong> 💻</p>
+        <div className="footer-links">
+            <a href="mailto:sigai@muj.manipal.edu" target="_blank" rel="noopener noreferrer">Email</a>
+            <a href="https://www.linkedin.com/company/sigai-muj/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+            <a href="https://www.instagram.com/sigai.muj/" target="_blank" rel="noopener noreferrer">Instagram</a>
+        </div>
+      </footer>
+      {selectedTile && (
+      <TileModal tile={selectedTile} onClose={() => setSelectedTile(null)} /> 
+      )}
     </div>
   );
 }

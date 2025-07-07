@@ -288,3 +288,44 @@ body {
     border-radius: 8px;
   }
   
+  .tile-trigger-marker {
+    height: 1px;
+    width: 100%;
+    position: relative;
+    top: 150px; /* adjust this to trigger sooner or later */
+  }
+  
+  /* footer */
+
+  .simple-footer {
+    padding: 1rem;
+    background-color: #0B100E;
+    color: #ccc;
+    font-size: 0.9rem;
+    text-align: center;
+    border-top: 1px solid #1E332D;
+    margin-top: 2rem;
+  }
+  
+  .simple-footer p {
+    margin: 0.3rem 0;
+  }
+  
+  .footer-links {
+    margin-top: 0.5rem;
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+  }
+  
+  .footer-links a {
+    color: #77f2c4;
+    text-decoration: none;
+    transition: opacity 0.2s ease;
+  }
+  
+  .footer-links a:hover {
+    opacity: 0.7;
+  }
+  
