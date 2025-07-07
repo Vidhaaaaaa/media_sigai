@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import './tile.css';
 
-function Tile({ image, description, name, dateTag, eveTag }) {
+function Tile({ image, description, name, dateTag, eveTag, onClick }) {
   const ref = useRef();
   const [visible, setVisible] = useState(false);
 
@@ -15,14 +15,17 @@ function Tile({ image, description, name, dateTag, eveTag }) {
   }, []);
 
   return (
-    <div ref={ref} className={`tile ${visible ? 'fade-in' : 'hidden'}`}>
+    <div ref={ref} className={`tile ${visible ? 'fade-in' : 'hidden'}`} onClick={onClick}>
       <img src={image} alt={description} className="tile-image" />
       <div className="tile-text">
         <p className="tile-description">{description}</p>
         <p className="tile-name"> ~ {name}</p>
         <hr className="tile-hr" />
-        <p className="tile-date-tag">{dateTag}</p>
-        <p className="tile-eve-tag">{eveTag}</p>
+        <div className="tile-tags">
+            <span className="tile-date-tag">{dateTag}</span>
+            <span className="tile-eve-tag">{eveTag}</span>
+        </div>
+
       </div>
     </div>
   );
