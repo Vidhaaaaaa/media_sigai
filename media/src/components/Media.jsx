@@ -1,8 +1,11 @@
+// --- START OF FILE Media.jsx (Updated) ---
+
 import React, { useState, useEffect } from 'react';
 import NightSky from './NightSky';
-import Tile from './tile'; // make sure this is correct
+import Tile from './tile'; 
 import './Media.css';
 import TileModal from './TileModal';
+import UploadModal from './UploadModal';
 
 const colors = ['#000000', '#0B100E', '#1E332D'];
 
@@ -27,6 +30,7 @@ function Media() {
   const [startCaption, setStartCaption] = useState(false);
   const [isCaptionDone, setIsCaptionDone] = useState(false);
   const [selectedTile, setSelectedTile] = useState(null);
+  const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
   
 
 
@@ -59,9 +63,9 @@ function Media() {
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            setBackground('#000000'); // green when marker hits viewport
+            setBackground('#000000'); 
           } else {
-            setBackground('#1E332D'); // black when it's out
+            setBackground('#1E332D'); 
           }
         });
       },
@@ -77,9 +81,14 @@ function Media() {
     };
   }, []);
   
-  
+  // The 'data' object now includes the 'tag' property
+  const handleUploadSubmit = (data) => {
+    console.log("New media to upload:", data);
+    // data is { image: File, description: "...", tag: "..." }
+    // Handle the file upload to a server here.
+    setIsUploadModalOpen(false);
+  };
 
-  // 🧩 Sample tiles for testing layout (you can replace this later)
   const tiles = [
     { image: '/87205.jpg', description: 'Sunset vibes', name: 'Vidha', dateTag: 'June 2024', eveTag: 'Hackathon' },
     { image: '/87205.jpg', description: 'Learning React', name: 'Dev', dateTag: 'May 2024', eveTag: 'Workshop' },
@@ -97,7 +106,6 @@ function Media() {
     { image: '/eif.jpg', description: 'More Vibes', name: 'Chill', dateTag: 'March 2024', eveTag: 'Event' }
   ];
 
-  // 💡 Distribute tiles into 3 columns round-robin
   const columns = [[], [], []];
   tiles.forEach((tile, index) => {
     columns[index % 3].unshift(
@@ -143,7 +151,9 @@ function Media() {
               <option value="2024-03">Mar 2024</option>
             </select>
           </div>
-          <button className="upload-btn">Upload Media</button>
+          <button className="upload-btn" onClick={() => setIsUploadModalOpen(true)}>
+              Upload Media
+          </button>
         </div>
         <div className="tiles-layout">
         <div className="tile-trigger-marker" /> 
@@ -163,8 +173,16 @@ function Media() {
             <a href="https://www.instagram.com/sigai.muj/" target="_blank" rel="noopener noreferrer">Instagram</a>
         </div>
       </footer>
+
       {selectedTile && (
-      <TileModal tile={selectedTile} onClose={() => setSelectedTile(null)} /> 
+        <TileModal tile={selectedTile} onClose={() => setSelectedTile(null)} /> 
+      )}
+
+      {isUploadModalOpen && (
+        <UploadModal 
+          onClose={() => setIsUploadModalOpen(false)} 
+          onSubmit={handleUploadSubmit}
+        />
       )}
     </div>
   );
