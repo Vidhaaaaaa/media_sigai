@@ -31,6 +31,8 @@ function Media() {
   const [isCaptionDone, setIsCaptionDone] = useState(false);
   const [selectedTile, setSelectedTile] = useState(null);
   const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
+  const [selectedEvent, setSelectedEvent] = useState('');
+  const [selectedDate, setSelectedDate] = useState('');
   
 
 
@@ -107,19 +109,29 @@ function Media() {
   ];
 
   const columns = [[], [], []];
-  tiles.forEach((tile, index) => {
-    columns[index % 3].unshift(
-      <Tile
-        key={index}
-        image={tile.image}
-        description={tile.description}
-        name={tile.name}
-        dateTag={tile.dateTag}
-        eveTag={tile.eveTag}
-        onClick={() => setSelectedTile(tile)}
-      />
-    );
-  });
+  // 🔎 Apply filters before rendering
+const filteredTiles = tiles.filter((tile) => {
+  const eventMatch = selectedEvent ? tile.eveTag.toLowerCase() === selectedEvent.toLowerCase() : true;
+  const dateMatch = selectedDate ? tile.dateTag.includes(selectedDate) : true;
+  return eventMatch && dateMatch;
+});
+
+// 💡 Distribute filtered tiles into 3 columns
+columns.forEach(col => col.length = 0); // clear columns before filling
+
+filteredTiles.forEach((tile, index) => {
+  columns[index % 3].unshift(
+    <Tile
+      key={index}
+      image={tile.image}
+      description={tile.description}
+      name={tile.name}
+      dateTag={tile.dateTag}
+      eveTag={tile.eveTag}
+      onClick={() => setSelectedTile(tile)}
+    />
+  );
+});
 
   return (
     <div className="main-wrapper" style={{ backgroundColor: background }}>
@@ -137,20 +149,32 @@ function Media() {
         </div>
 
         <div className="media-controls">
-          <div className="filters">
-            <select className="dropdown">
-              <option value="">Filter by Event</option>
-              <option value="hackathon">Hackathon</option>
-              <option value="seminar">Seminar</option>
-              <option value="workshop">Workshop</option>
-            </select>
-            <select className="dropdown">
-              <option value="">Filter by Date</option>
-              <option value="2024-01">Jan 2024</option>
-              <option value="2024-02">Feb 2024</option>
-              <option value="2024-03">Mar 2024</option>
-            </select>
-          </div>
+        <div className="filters">
+  <select
+    className="dropdown"
+    value={selectedEvent}
+    onChange={(e) => setSelectedEvent(e.target.value)}
+  >
+    <option value="">Filter by Event</option>
+    <option value="Hackathon">Hackathon</option>
+    <option value="Seminar">Seminar</option>
+    <option value="Workshop">Workshop</option>
+    <option value="Event">Other Event</option>
+  </select>
+
+  <select
+    className="dropdown"
+    value={selectedDate}
+    onChange={(e) => setSelectedDate(e.target.value)}
+  >
+    <option value="">Filter by Date</option>
+    <option value="June 2024">June 2024</option>
+    <option value="May 2024">May 2024</option>
+    <option value="April 2024">April 2024</option>
+    <option value="March 2024">March 2024</option>
+  </select>
+</div>
+
           <button className="upload-btn" onClick={() => setIsUploadModalOpen(true)}>
               Upload Media
           </button>
